@@ -1,0 +1,25 @@
+services:
+  php:
+    container_name: php
+    build: ./backend
+    command: php artisan serve --host=0.0.0.0
+    volumes:
+      - ./backend:/var/www/html
+    labels:
+      traefik.enable: true
+      traefik.http.routers.starter-api.rule: Host(`api.starter.paqt.dev`)
+      traefik.http.routers.starter-api.service: starter-api
+      traefik.http.services.starter-api.loadbalancer.server.port: 8000
+
+  node:
+    container_name: node
+    build: ./frontend
+    command: pnpm run dev
+    volumes:
+      - ./frontend:/app
+    labels:
+      traefik.enable: true
+      traefik.http.routers.starter-web.rule: Host(`web.starter.paqt.dev`)
+      traefik.http.routers.starter-web.service: starter-web
+      traefik.http.services.starter-web.loadbalancer.server.port: 3000
+    
