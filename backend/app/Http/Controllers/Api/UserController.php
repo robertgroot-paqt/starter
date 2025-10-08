@@ -8,12 +8,14 @@ use App\Models\User;
 use Spatie\LaravelData\PaginatedDataCollection;
 use Spatie\RouteAttributes\Attributes\Delete;
 use Spatie\RouteAttributes\Attributes\Get;
+use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Put;
 
 /**
  * @extends ApiController<User, UserData>
  */
+#[Middleware('auth:api')]
 class UserController extends ApiController
 {
     public function data(): string

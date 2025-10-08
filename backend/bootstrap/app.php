@@ -9,7 +9,11 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting()
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->appendToGroup('api', [
+        // Sanctum SPA auth
+        $middleware->statefulApi();
+
+        $middleware->appendToGroup('auth:api', [
+            'auth:sanctum',
             ApiAuthorizeMiddleware::class,
         ]);
     })

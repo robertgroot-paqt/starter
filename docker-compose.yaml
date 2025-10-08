@@ -3,8 +3,9 @@ services:
     container_name: php
     build: ./backend
     command: php artisan serve --host=0.0.0.0
+    working_dir: /var/www/html/backend
     volumes:
-      - ./backend:/var/www/html
+      - ./:/var/www/html
     labels:
       traefik.enable: true
       traefik.http.routers.starter-api.rule: Host(`api.starter.paqt.dev`)
@@ -15,8 +16,9 @@ services:
     container_name: node
     build: ./frontend
     command: pnpm run dev
+    working_dir: /app/frontend
     volumes:
-      - ./frontend:/app
+      - ./:/app
     labels:
       traefik.enable: true
       traefik.http.routers.starter-web.rule: Host(`web.starter.paqt.dev`)

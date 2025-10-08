@@ -1,5 +1,9 @@
 # Laravel starter project
 
+## Laravel sanctum
+
+API auth :)
+
 ## Laravel data
 
 No more magically typed requests and resources, but strictly typed data object everywhere!
@@ -33,7 +37,6 @@ There is some custom logic that handles some stuff automagically:
 
 ## TODOs
 
-- Auth: sanctum?
 - Folder structure: feature folders?
 - Typescript generation
     - Data types
