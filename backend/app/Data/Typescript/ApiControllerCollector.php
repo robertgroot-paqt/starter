@@ -3,6 +3,7 @@
 namespace App\Data\Typescript;
 
 use App\Data\Base\Data;
+use App\Data\Base\PaginatedDataCollection;
 use App\Data\Operations\Operation;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
+use Spatie\LaravelData\Support\Annotations\DataIterableAnnotationReader;
 use Spatie\LaravelData\Support\DataClass;
 use Spatie\LaravelData\Support\Factories\DataClassFactory;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -54,6 +56,10 @@ class ApiControllerCollector extends Collector
             }
 
             $output = null;
+
+            // dump($class->getName());
+            // $annotation = App::make(DataIterableAnnotationReader::class)->getForMethod($classMethod);
+            // dump($annotation);
 
             if ($outputRegisterd = $this->registerType($classMethod->getReturnType())) {
                 $output = $missingSymbols->add($outputRegisterd);

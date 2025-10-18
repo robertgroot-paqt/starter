@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Data\Base\PaginatedDataCollection;
 use App\Data\UserData;
 use App\Http\Controllers\ApiController;
 use App\Models\User;
-use Spatie\LaravelData\PaginatedDataCollection;
 use Spatie\RouteAttributes\Attributes\Delete;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Middleware;

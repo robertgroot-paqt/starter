@@ -17,6 +17,11 @@ services:
     build: ./frontend
     command: pnpm run dev
     working_dir: /app/frontend
+    extra_hosts:
+    - api.starter.paqt.dev:host-gateway
+    environment:
+      # Do not verify SSL for paqt.dev
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
     volumes:
       - ./:/app
     labels:

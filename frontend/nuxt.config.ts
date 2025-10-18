@@ -9,7 +9,10 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: ["nuxt-auth-sanctum"],
+    modules: [
+        "nuxt-auth-sanctum",
+        '@nuxt/ui',
+    ],
 
     // https://manchenkoff.gitbook.io/nuxt-auth-sanctum
     sanctum: {

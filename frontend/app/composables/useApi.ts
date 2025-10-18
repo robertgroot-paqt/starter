@@ -28,7 +28,9 @@ export function useApi<
         url = replaceParameters(url, urlParameters)
     }
 
-    return useSanctumFetch<TResponse>(url, {
+    const client = useSanctumClient();
+
+    return client<TResponse>(url, {
         method: method,
         body: data,
         query: query,
