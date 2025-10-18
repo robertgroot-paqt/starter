@@ -6,20 +6,11 @@
     "keywords": [
         "laravel"
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:iamrgroot/laravel-data.git",
-            "only": [
-                "spatie/laravel-data"
-            ]
-        }
-    ],
     "require": {
         "php": "^8.4",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
-        "spatie/laravel-data": "dev-fix/context-cloning",
+        "spatie/laravel-data": "^4.18",
         "spatie/laravel-json-api-paginate": "^1.16",
         "spatie/laravel-permission": "^6.21",
         "spatie/laravel-query-builder": "^6.3",

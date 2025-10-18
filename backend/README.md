@@ -35,6 +35,12 @@ There is some custom logic that handles some stuff automagically:
         - Includeable via query param
         - TODO: is there a better way to get the Model in the operation?
 
+## Typescript generation
+
+See `backend/app/Data/Typescript` for some customization of the laravel data typescript generator that generates code so that de API can be called type safely
+
+Run `php artisan typescript:transform` in the backend to generate the file that is symlinked to the frontend folder.
+
 ## TODOs
 
 - Folder structure: feature folders?

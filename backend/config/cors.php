@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['web.starter.paqt.dev'],
+    'allowed_origins' => ['https://web.starter.paqt.dev'],
 
     'allowed_origins_patterns' => [],
 

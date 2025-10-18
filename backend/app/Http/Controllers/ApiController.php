@@ -73,7 +73,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedInclude> */
-    protected function allowedIncludes(): array
+    public function allowedIncludes(): array
     {
         $model = $this->model();
 
@@ -81,7 +81,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedFilter> */
-    protected function allowedFilters(): array
+    public function allowedFilters(): array
     {
         $model = $this->model();
 
@@ -89,7 +89,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedSort> */
-    protected function allowedSorts(): array
+    public function allowedSorts(): array
     {
         $model = $this->model();
 

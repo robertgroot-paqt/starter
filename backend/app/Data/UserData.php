@@ -16,7 +16,7 @@ class UserData extends Data
         public string $id,
         public string $name,
         public string $email,
-        /** @var Lazy|DataCollection<int, RoleData> */
+        /** @var Lazy|DataCollection<int,RoleData> */
         public Lazy|DataCollection $roles,
     ) {}
 
