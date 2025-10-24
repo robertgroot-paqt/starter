@@ -14,7 +14,9 @@ export default defineNuxtConfig({
         '@nuxt/ui',
     ],
 
-    // https://manchenkoff.gitbook.io/nuxt-auth-sanctum
+    css: ['~/assets/css/main.css'],
+
+    // https://sanctum.manchenkoff.me/usage/configuration
     sanctum: {
         baseUrl: "https://api.starter.paqt.dev/api/v1",
         endpoints: {
@@ -26,5 +28,6 @@ export default defineNuxtConfig({
         globalMiddleware: {
             enabled: true,
         },
+        // logLevel: 5
     },
 });
