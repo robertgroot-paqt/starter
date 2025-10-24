@@ -3,7 +3,6 @@
 namespace App\Data\Typescript;
 
 use App\Data\Base\Data;
-use App\Data\Base\PaginatedDataCollection;
 use App\Data\Operations\Operation;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;

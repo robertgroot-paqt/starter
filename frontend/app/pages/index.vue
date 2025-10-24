@@ -6,8 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import { UserApi } from '~/data/generated';
-
 definePageMeta({
     sanctum: {
         excluded: true,

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\GenericDeleteAction;
 use App\Actions\GenericUpsertAction;
-use App\Data\Base\Data;
+use App\Data\Responses\ResponseData;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\PaginatedDataCollection;
@@ -15,7 +15,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @template TModel of Model
- * @template TData of Data
+ * @template TData of ResponseData
  */
 abstract class ApiController extends Controller
 {
@@ -46,7 +46,7 @@ abstract class ApiController extends Controller
         );
     }
 
-    protected function fetchShow(Model $model): Data
+    protected function fetchShow(Model $model): ResponseData
     {
         return $this->data()::from(
             $this->queryBuilder()->findOrFail($model->getKey())

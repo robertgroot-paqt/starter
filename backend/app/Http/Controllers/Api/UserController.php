@@ -12,9 +12,7 @@ use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Put;
 
-/**
- * @extends ApiController<User, UserData>
- */
+/** @extends ApiController<User, UserData> */
 #[Middleware('auth:api')]
 class UserController extends ApiController
 {

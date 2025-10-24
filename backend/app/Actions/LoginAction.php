@@ -18,10 +18,12 @@ class LoginAction
     {
         $credentials = $data->toCredentialsArray();
 
-        /** @var User|null $user */
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+        $authProvider = Auth::getProvider();
 
-        if (! $user || ! Auth::getProvider()->validateCredentials($user, $credentials)) {
+        /** @var User|null $user */
+        $user = $authProvider->retrieveByCredentials($credentials);
+
+        if (! $user || ! $authProvider->validateCredentials($user, $credentials)) {
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
