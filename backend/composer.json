@@ -8,7 +8,7 @@
     ],
     "require": {
         "php": "^8.4",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^12.35",
         "laravel/sanctum": "^4.0",
         "spatie/laravel-data": "^4.18",
         "spatie/laravel-json-api-paginate": "^1.16",

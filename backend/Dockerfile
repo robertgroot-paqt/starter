@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4-fpm-alpine as base
 
 # PHP extensions
 
@@ -9,3 +9,8 @@ RUN install-php-extensions pcntl
 # Composer
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+FROM base AS dev
+
+# Add system packages for dev
+RUN apk add just
