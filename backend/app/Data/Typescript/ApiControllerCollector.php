@@ -54,10 +54,6 @@ class ApiControllerCollector extends Collector
 
             $output = $this->reflectionToTypeScript($classMethod, $missingSymbols);
 
-            if ($output === 'void') {
-                $output = 'never';
-            }
-
             $result .= $this->getTypescript($route, $input, $output);
         }
 
@@ -119,6 +115,10 @@ class ApiControllerCollector extends Collector
     private function getTypescript(Route $route, ?string $input, ?string $output): string
     {
         $output ??= 'never';
+
+        if ($output === 'void') {
+            $output = 'never';
+        }
 
         [$parametersDecl, $parametersUsage] = $this->buildParameters($route);
         [$inputDecl, $inputUsage] = $this->buildInput($input);
