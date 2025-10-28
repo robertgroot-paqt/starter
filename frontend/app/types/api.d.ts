@@ -1,3 +1,3 @@
 type Filter<T extends string> = {
-    [K in T]?: string
-}
+    [K in T]?: string;
+};

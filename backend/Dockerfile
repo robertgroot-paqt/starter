@@ -12,5 +12,4 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM base AS dev
 
-# Add system packages for dev
 RUN apk add just

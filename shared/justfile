@@ -1,6 +1,3 @@
-default:
-    just --list
-
 in_docker := path_exists("/.dockerenv")
 
 be_container := "php"

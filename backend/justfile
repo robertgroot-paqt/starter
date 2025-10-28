@@ -4,6 +4,9 @@ import './.dev/just/db.just'
 import './.dev/just/composer.just'
 import './.dev/just/tools.just'
 
+default:
+    just --list
+
 env:
     @test -f .env || cp .env.example .env
 

@@ -1,8 +1,10 @@
 <template>
-    hi {{ user }}
+    <div>
+        <span> hi {{ user }}</span>
 
-    <button v-if="user" @click="logout">logout</button>
-    <NuxtLink v-else to="login">login</NuxtLink>
+        <button v-if="user" @click="logout">logout</button>
+        <NuxtLink v-else to="login">login</NuxtLink>
+    </div>
 </template>
 
 <script setup lang="ts">

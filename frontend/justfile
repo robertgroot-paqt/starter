@@ -1,0 +1,10 @@
+import '../shared/justfile'
+
+import '.dev/just/tools.just'
+
+default:
+    just --list
+
+fix: prettier-fix eslint-fix
+
+lint: prettier eslint

@@ -1,15 +1,15 @@
-function replaceParameters(url: string, urlParameters: Record<string, unknown>) {
+function replaceParameters(
+    url: string,
+    urlParameters: Record<string, unknown>,
+) {
     Object.entries(urlParameters).forEach(([key, value]) => {
         url = url.replace(`{${key}}`, String(value));
     });
 
     return url;
-
 }
 
-export function useApi<
-    TResponse extends Record<string, unknown>
->({
+export function useApi<TResponse extends Record<string, unknown>>({
     url,
     method,
     urlParameters,
@@ -22,10 +22,10 @@ export function useApi<
     urlParameters?: Record<string, unknown>;
     query?: Record<string, unknown>;
 }) {
-    url = url.replace('api/v1', '');
+    url = url.replace("api/v1", "");
 
     if (urlParameters) {
-        url = replaceParameters(url, urlParameters)
+        url = replaceParameters(url, urlParameters);
     }
 
     const client = useSanctumClient();
@@ -35,4 +35,4 @@ export function useApi<
         body: data,
         query: query,
     });
-};
+}

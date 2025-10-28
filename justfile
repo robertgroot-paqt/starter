@@ -4,8 +4,11 @@ import './shared/justfile'
 mod backend
 mod frontend
 
-fix:
-    just backend::fix
+default:
+    just --list
 
-lint: 
-    just backend::lint
+fix:
+    just backend::fix frontend::fix
+
+lint:
+    just backend::lint frontend::lint

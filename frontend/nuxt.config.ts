@@ -9,21 +9,18 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: [
-        "nuxt-auth-sanctum",
-        '@nuxt/ui',
-    ],
+    modules: ["nuxt-auth-sanctum", "@nuxt/ui", "@nuxt/eslint"],
 
-    css: ['~/assets/css/main.css'],
+    css: ["~/assets/css/main.css"],
 
     // https://sanctum.manchenkoff.me/usage/configuration
     sanctum: {
         baseUrl: "https://api.starter.paqt.dev/api/v1",
         endpoints: {
-            user: 'session',
-            csrf: 'session/csrf-cookie',
-            login: 'session',
-            logout: 'session/logout',
+            user: "session",
+            csrf: "session/csrf-cookie",
+            login: "session",
+            logout: "session/logout",
         },
         globalMiddleware: {
             enabled: true,

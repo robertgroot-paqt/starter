@@ -33,7 +33,7 @@ export const UserApi = {
                   sorts?: ("name" | "-name")[];
                   filters?: Filter<"id" | "name" | "email">[];
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
-              } = undefined
+              } = undefined,
     ) =>
         useApi<any>({
             url: "api/v1/users",
@@ -49,7 +49,7 @@ export const UserApi = {
                   sorts?: ("name" | "-name")[];
                   filters?: Filter<"id" | "name" | "email">[];
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
-              } = undefined
+              } = undefined,
     ) =>
         useApi<UserData>({
             url: "api/v1/users",
@@ -66,7 +66,7 @@ export const UserApi = {
                   sorts?: ("name" | "-name")[];
                   filters?: Filter<"id" | "name" | "email">[];
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
-              } = undefined
+              } = undefined,
     ) =>
         useApi<UserData>({
             url: "api/v1/users/{user}",
@@ -84,7 +84,7 @@ export const UserApi = {
                   sorts?: ("name" | "-name")[];
                   filters?: Filter<"id" | "name" | "email">[];
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
-              } = undefined
+              } = undefined,
     ) =>
         useApi<UserData>({
             url: "api/v1/users/{user}",
@@ -102,7 +102,7 @@ export const UserApi = {
                   sorts?: ("name" | "-name")[];
                   filters?: Filter<"id" | "name" | "email">[];
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
-              } = undefined
+              } = undefined,
     ) =>
         useApi<any>({
             url: "api/v1/users/{user}",
