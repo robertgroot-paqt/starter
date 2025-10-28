@@ -2,14 +2,14 @@
 
 namespace App\Data\Operations;
 
-use App\Data\Base\Data;
+use App\Data\Responses\ResponseData;
 
 /** @extends Operation<UserData> */
 class UserCreateOperation extends Operation
 {
     public string $name = 'create';
 
-    public function applicable(?Data $data): bool
+    public function applicable(?ResponseData $data): bool
     {
         return $data === null;
     }

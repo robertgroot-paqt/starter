@@ -2,7 +2,7 @@
 
 namespace App\Data\Operations;
 
-use App\Data\Base\Data;
+use App\Data\Responses\ResponseData;
 use Illuminate\Support\Facades\Gate;
 
 /** @extends Operation<UserData> */
@@ -10,7 +10,7 @@ class UserUpdateOperation extends Operation
 {
     public string $name = 'update';
 
-    public function applicable(?Data $data): bool
+    public function applicable(?ResponseData $data): bool
     {
         if ($data === null) {
             return false;

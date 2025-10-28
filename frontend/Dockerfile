@@ -1,6 +1,8 @@
-FROM node:lts-alpine
+FROM node:lts-alpine AS base
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-WORKDIR /app
+FROM base AS local
+
+RUN apk add git just

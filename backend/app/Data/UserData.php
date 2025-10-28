@@ -2,21 +2,21 @@
 
 namespace App\Data;
 
-use App\Data\Base\Data;
 use App\Data\Base\DataCollection;
 use App\Data\Operations\UserCreateOperation;
 use App\Data\Operations\UserDeleteOperation;
 use App\Data\Operations\UserUpdateOperation;
+use App\Data\Responses\ResponseData;
 use App\Models\User;
 use Spatie\LaravelData\Lazy;
 
-class UserData extends Data
+class UserData extends ResponseData
 {
     public function __construct(
         public string $id,
         public string $name,
         public string $email,
-        /** @var Lazy|DataCollection<int, RoleData> */
+        /** @var Lazy|DataCollection<int,RoleData> */
         public Lazy|DataCollection $roles,
     ) {}
 

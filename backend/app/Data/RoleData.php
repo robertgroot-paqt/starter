@@ -2,19 +2,20 @@
 
 namespace App\Data;
 
-use App\Data\Base\Data;
+use App\Data\Responses\ResponseData;
 use App\Models\Role;
 
-class RoleData extends Data
+class RoleData extends ResponseData
 {
     public function __construct(
         public string $name,
     ) {}
 
-    public static function fromModel(Role $user): self
+    public static function fromModel(Role $role): self
     {
         return new self(
-            name: $user->name,
+            name: $role->name,
         );
+        // ->setFromModel($role);
     }
 }

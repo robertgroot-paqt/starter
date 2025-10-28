@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Data\Base\PaginatedDataCollection;
 use App\Data\UserData;
 use App\Http\Controllers\ApiController;
 use App\Models\User;
-use Spatie\LaravelData\PaginatedDataCollection;
 use Spatie\RouteAttributes\Attributes\Delete;
 use Spatie\RouteAttributes\Attributes\Get;
+use Spatie\RouteAttributes\Attributes\Middleware;
 use Spatie\RouteAttributes\Attributes\Post;
 use Spatie\RouteAttributes\Attributes\Put;
 
-/**
- * @extends ApiController<User, UserData>
- */
+#[Middleware('auth:api')]
+/** @extends ApiController<User, UserData> */
 class UserController extends ApiController
 {
     public function data(): string
@@ -31,8 +31,8 @@ class UserController extends ApiController
         return 'user';
     }
 
-    /** @return PaginatedDataCollection<array-key,UserData> */
     #[Get('users')]
+    /** @return PaginatedDataCollection<int|string,UserData> */
     public function index(): PaginatedDataCollection
     {
         return $this->fetchIndex();

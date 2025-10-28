@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Permissions\UserPermissions;
 use App\Enums\RoleEnum;
+use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class SyncRolesAndPermissionsCommand extends Command
@@ -14,13 +17,24 @@ class SyncRolesAndPermissionsCommand extends Command
 
     public function handle(): int
     {
-        $roles = RoleEnum::values();
-
-        foreach ($roles as $role) {
+        foreach (RoleEnum::values() as $role) {
             Role::findOrCreate($role);
         }
 
-        // TODO permissions. From config?
+        $allPermissions = [
+            ...UserPermissions::values(),
+        ];
+        foreach ([
+            ...UserPermissions::values(),
+        ] as $permission) {
+            Permission::findOrCreate($permission);
+        }
+
+        $adminRole = Role::findByName(RoleEnum::ADMIN->value);
+        $adminRole->syncPermissions($allPermissions);
+
+        $admin = User::query()->firstOrFail();
+        $admin->syncRoles(RoleEnum::ADMIN);
 
         return Command::SUCCESS;
     }

@@ -1,0 +1,10 @@
+in_docker := path_exists("/.dockerenv")
+
+be_container := "php"
+fe_container := "node"
+
+in-be *COMMAND:
+    {{ if in_docker == "true" { "" } else { "docker compose exec " + be_container } }} {{COMMAND}}
+
+in-fe *COMMAND:
+    {{ if in_docker == "true" { "" } else { "docker compose exec " + fe_container } }} {{COMMAND}}

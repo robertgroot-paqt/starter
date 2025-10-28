@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\GenericDeleteAction;
 use App\Actions\GenericUpsertAction;
-use App\Data\Base\Data;
+use App\Data\Responses\ResponseData;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\PaginatedDataCollection;
@@ -15,7 +15,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * @template TModel of Model
- * @template TData of Data
+ * @template TData of ResponseData
  */
 abstract class ApiController extends Controller
 {
@@ -46,16 +46,15 @@ abstract class ApiController extends Controller
         );
     }
 
-    protected function fetchShow(Model $model): Data
+    /** @return TData */
+    protected function fetchShow(Model $model): ResponseData
     {
         return $this->data()::from(
             $this->queryBuilder()->findOrFail($model->getKey())
         );
     }
 
-    /**
-     * @return QueryBuilder<TModel>
-     */
+    /** @return QueryBuilder<TModel> */
     protected function queryBuilder(): QueryBuilder
     {
         return QueryBuilder::for($this->baseQuery())
@@ -73,7 +72,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedInclude> */
-    protected function allowedIncludes(): array
+    public function allowedIncludes(): array
     {
         $model = $this->model();
 
@@ -81,7 +80,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedFilter> */
-    protected function allowedFilters(): array
+    public function allowedFilters(): array
     {
         $model = $this->model();
 
@@ -89,7 +88,7 @@ abstract class ApiController extends Controller
     }
 
     /** @return list<string|AllowedSort> */
-    protected function allowedSorts(): array
+    public function allowedSorts(): array
     {
         $model = $this->model();
 

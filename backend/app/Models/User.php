@@ -61,6 +61,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         ];
     }
 
+    public function allowedSorts(): array
+    {
+        return ['name'];
+    }
+
     protected function casts(): array
     {
         return [

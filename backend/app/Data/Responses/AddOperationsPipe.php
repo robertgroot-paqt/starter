@@ -3,7 +3,6 @@
 namespace App\Data\Responses;
 
 use App\Data\Base\CursorPaginatedDataCollection;
-use App\Data\Base\Data;
 use App\Data\Base\DataCollection;
 use App\Data\Base\PaginatedDataCollection;
 use App\Data\Operations\Operation;
@@ -33,7 +32,7 @@ class AddOperationsPipe
             return $next($input);
         }
 
-        if ($data instanceof Data) {
+        if ($data instanceof ResponseData) {
             $transformed['operations'] = $this->getOperations($data::class, $data);
         } elseif (
             $data instanceof DataCollection
@@ -49,10 +48,10 @@ class AddOperationsPipe
     }
 
     /**
-     * @param  class-string<Data>  $dataClass
+     * @param  class-string<ResponseData>  $dataClass
      * @return array<string,Operation>
      */
-    private function getOperations(string|Data $dataClass, ?Data $subject = null): array
+    private function getOperations(string $dataClass, ?ResponseData $subject = null): array
     {
         /** @var array<string,Operation> */
         $operations = [];

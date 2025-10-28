@@ -9,7 +9,16 @@ return [
 
     'collectors' => [
         Spatie\TypeScriptTransformer\Collectors\DefaultCollector::class,
+        App\Data\Typescript\ApiControllerCollector::class,
+        App\Data\Typescript\ApiControllerDataCollector::class,
     ],
 
-    'output_file' => resource_path('types/generated.d.ts'),
+    'transformers' => [
+        Spatie\TypeScriptTransformer\Transformers\EnumTransformer::class,
+        Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer::class,
+    ],
+
+    'output_file' => resource_path('types/generated.ts'),
+
+    'writer' => Spatie\TypeScriptTransformer\Writers\ModuleWriter::class,
 ];
