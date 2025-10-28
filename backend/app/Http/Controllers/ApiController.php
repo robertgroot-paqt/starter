@@ -46,6 +46,7 @@ abstract class ApiController extends Controller
         );
     }
 
+    /** @return TData */
     protected function fetchShow(Model $model): ResponseData
     {
         return $this->data()::from(
@@ -53,9 +54,7 @@ abstract class ApiController extends Controller
         );
     }
 
-    /**
-     * @return QueryBuilder<TModel>
-     */
+    /** @return QueryBuilder<TModel> */
     protected function queryBuilder(): QueryBuilder
     {
         return QueryBuilder::for($this->baseQuery())
