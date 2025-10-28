@@ -9,7 +9,9 @@ function replaceParameters(
     return url;
 }
 
-export function useApi<TResponse extends Record<string, unknown>>({
+type Data = Record<string, unknown>;
+
+export function useApi<TResponse extends Data | Data[]>({
     url,
     method,
     urlParameters,

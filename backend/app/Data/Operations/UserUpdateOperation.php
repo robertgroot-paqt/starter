@@ -16,6 +16,6 @@ class UserUpdateOperation extends Operation
             return false;
         }
 
-        return Gate::allows('update', [$data->fromModel]);
+        return Gate::allows('update', [$data->getFromModel()]);
     }
 }

@@ -31,7 +31,7 @@ class UserController extends ApiController
         return 'user';
     }
 
-    /** @return PaginatedDataCollection<array-key,UserData> */
+    /** @return PaginatedDataCollection<int|string,UserData> */
     #[Get('users')]
     public function index(): PaginatedDataCollection
     {

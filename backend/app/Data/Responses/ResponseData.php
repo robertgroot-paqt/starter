@@ -18,14 +18,15 @@ use Spatie\LaravelData\Support\Transformation\TransformationContext;
 
 abstract class ResponseData extends Data
 {
-    public protected(set) Model $fromModel {
-        get {
-            if (! isset($this->fromModel)) {
-                throw new LogicException('`fromModel` needs to be set. Usually this is done in the `fromModel` function.');
-            }
+    protected Model $fromModel;
 
-            return $this->fromModel;
+    public function getFromModel(): Model
+    {
+        if (! isset($this->fromModel)) {
+            throw new LogicException('`fromModel` needs to be set. Usually this is done in the `fromModel` function.');
         }
+
+        return $this->fromModel;
     }
 
     public function setFromModel(Model $model): static

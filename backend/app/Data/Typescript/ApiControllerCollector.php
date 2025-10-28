@@ -12,12 +12,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use ReflectionClass;
-use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
-use ReflectionUnionType;
-use Spatie\LaravelData\Support\Annotations\DataIterableAnnotationReader;
 use Spatie\LaravelData\Support\DataClass;
 use Spatie\LaravelData\Support\Factories\DataClassFactory;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -26,9 +23,12 @@ use Spatie\QueryBuilder\AllowedSort;
 use Spatie\TypeScriptTransformer\Collectors\Collector;
 use Spatie\TypeScriptTransformer\Structures\MissingSymbolsCollection;
 use Spatie\TypeScriptTransformer\Structures\TransformedType;
+use Spatie\TypeScriptTransformer\Transformers\TransformsTypes;
 
 class ApiControllerCollector extends Collector
 {
+    use TransformsTypes;
+
     public static array $visitedClasses = [];
 
     public function getTransformedType(ReflectionClass $class): ?TransformedType
@@ -46,25 +46,23 @@ class ApiControllerCollector extends Collector
         foreach ($this->findRoutesFor($class) as $route) {
             $classMethod = $class->getMethod($route->getActionMethod());
 
-            $dataParameter = $this->findDataParameter($classMethod);
-
             $input = null;
 
-            if ($inputRegistered = $this->registerType($dataParameter?->getType())) {
-                $input = $missingSymbols->add($inputRegistered);
+            if ($dataParameter = $this->findDataParameter($classMethod)) {
+                $input = $this->reflectionToTypeScript($dataParameter, $missingSymbols);
             }
 
-            $output = null;
+            $output = $this->reflectionToTypeScript($classMethod, $missingSymbols);
 
-            // dump($class->getName());
-            // $annotation = App::make(DataIterableAnnotationReader::class)->getForMethod($classMethod);
-            // dump($annotation);
-
-            if ($outputRegisterd = $this->registerType($classMethod->getReturnType())) {
-                $output = $missingSymbols->add($outputRegisterd);
+            if ($output === 'void') {
+                $output = 'never';
             }
 
             $result .= $this->getTypescript($route, $input, $output);
+        }
+
+        foreach ($missingSymbols->all() as $missingSymbol) {
+            $this->registerDataClasses($missingSymbol);
         }
 
         return new TransformedConst(
@@ -99,69 +97,8 @@ class ApiControllerCollector extends Collector
         );
     }
 
-    private function getTransformedName(ReflectionClass $class): string
-    {
-        return str_replace('Controller', 'Api', $class->getShortName());
-    }
-
-    private function getTypescript(Route $route, ?string $input, ?string $output): string
-    {
-        $parameters = '';
-        $parameters2 = '';
-
-        if ($routeParameters = $route->parameterNames()) {
-            $parameters = 'parameters: {';
-
-            foreach ($routeParameters as $routeParameter) {
-                $parameters .= " {$routeParameter}: string, ";
-            }
-
-            $parameters .= '}, ';
-            $parameters2 = 'urlParameters: parameters,';
-        }
-
-        $input = $input ? "input: {$input}, " : '';
-        $input2 = $input ? 'data: input,' : '';
-
-        $controller = $route->getController();
-
-        $query = '';
-        $query2 = '';
-        if ($controller instanceof ApiController) {
-            $query = $this->getQueryType($controller).', ';
-            $query2 = 'query: query,';
-        }
-
-        return <<<TS
-
-            {$route->getActionMethod()}: ({$parameters}{$input}{$query}) =>
-                useApi<{$output}>({
-                    url: "{$route->uri}",
-                    method: "{$route->methods[0]}",{$input2}{$parameters2}{$query2}
-                }),
-        TS;
-    }
-
-    private function registerType(ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type): ?string
-    {
-        if (! $type instanceof ReflectionNamedType) {
-            return null;
-        }
-
-        $this->registerDataClasses($type->getName());
-
-        return $type->getName();
-    }
-
     private function registerDataClasses(string $class): void
     {
-        if (
-            ! is_a($class, Data::class, true)
-            || (self::$visitedClasses[$class] ?? false)
-        ) {
-            return;
-        }
-
         self::$visitedClasses[$class] = true;
 
         /** @var DataClass $dataClass */
@@ -174,52 +111,120 @@ class ApiControllerCollector extends Collector
         }
     }
 
-    private function getQueryType(ApiController $controller): string
+    private function getTransformedName(ReflectionClass $class): string
     {
-        $filters = $this->valuesToType(
-            $controller->allowedFilters(),
-            fn (string|AllowedFilter $filter) => $filter instanceof AllowedFilter ? $filter->getName() : $filter,
-        );
-        $filters = $filters ? "filters?: Filter<{$filters}>[]," : '';
+        return str_replace('Controller', 'Api', $class->getShortName());
+    }
 
-        $includes = $this->valuesToType(
-            $controller->allowedIncludes(),
-            fn (string|AllowedInclude $include) => $include instanceof AllowedInclude ? $include->getName() : $include,
-        );
-        $includes = $includes ? "include?: ({$includes})[]," : '';
+    private function getTypescript(Route $route, ?string $input, ?string $output): string
+    {
+        $output ??= 'never';
 
-        $sortStringValue = fn (string|AllowedSort $sort) => $sort instanceof AllowedSort ? $sort->getName() : $sort;
-        $sorts = $controller->allowedSorts();
-        foreach ($sorts as $sort) {
-            $sorts[] = '-'.$sortStringValue($sort);
-        }
-        $sorts = $this->valuesToType(
-            $sorts,
-            $sortStringValue,
-        );
-        $sorts = $sorts ? "sorts?: ({$sorts})[]," : '';
-
-        $operations = $this->valuesToType(
-            $controller->data()::operations(),
-            fn (Operation $operation) => $operation->name,
-        );
-        $operations .= '|"*"';
-        $operations = $operations ? "includeOperations?: ({$operations})[]," : '';
+        [$parametersDecl, $parametersUsage] = $this->buildParameters($route);
+        [$inputDecl, $inputUsage] = $this->buildInput($input);
+        [$queryDecl, $queryUsage] = $this->buildQuery($route);
 
         return <<<TS
-            query: undefined | {{$includes}{$sorts}{$filters}{$operations}} = undefined
+            {$route->getActionMethod()}: ({$parametersDecl}{$inputDecl}{$queryDecl}) =>
+                useApi<{$output}>({
+                    url: "{$route->uri}",
+                    method: "{$route->methods[0]}",{$inputUsage}{$parametersUsage}{$queryUsage}
+                }),
         TS;
+    }
+
+    private function buildParameters(Route $route): array
+    {
+        $routeParameters = $route->parameterNames();
+
+        if (empty($routeParameters)) {
+            return ['', ''];
+        }
+
+        $params = array_map(fn ($param) => "{$param}: string", $routeParameters);
+        $declaration = 'parameters: {'.implode(', ', $params).'}, ';
+        $usage = 'urlParameters: parameters,';
+
+        return [$declaration, $usage];
+    }
+
+    private function buildInput(?string $input): array
+    {
+        if (! $input) {
+            return ['', ''];
+        }
+
+        return ["input: {$input}, ", 'data: input,'];
+    }
+
+    private function buildQuery(Route $route): array
+    {
+        $controller = $route->getController();
+
+        if (! $controller instanceof ApiController) {
+            return ['', ''];
+        }
+
+        return [$this->getQueryType($controller).', ', 'query: query,'];
+    }
+
+    private function getQueryType(ApiController $controller): string
+    {
+        $filters = $this->buildNestedTypeProperty(
+            'filters',
+            'Filter',
+            $controller->allowedFilters(),
+            fn ($filter) => $filter instanceof AllowedFilter ? $filter->getName() : $filter
+        );
+
+        $includes = $this->buildTypeProperty(
+            'include',
+            $controller->allowedIncludes(),
+            fn ($include) => $include instanceof AllowedInclude ? $include->getName() : $include
+        );
+
+        $sorts = $this->buildSorts($controller->allowedSorts());
+        $operations = $this->buildOperations($controller->data()::operations());
+
+        return sprintf('query: undefined | {%s%s%s%s} = undefined', $includes, $sorts, $filters, $operations);
+    }
+
+    private function buildSorts(array $sorts): string
+    {
+        $getName = fn ($sort) => $sort instanceof AllowedSort ? $sort->getName() : $sort;
+
+        foreach ($sorts as $sort) {
+            $sorts[] = '-'.$getName($sort);
+        }
+
+        return $this->buildTypeProperty('sorts', $sorts, $getName);
+    }
+
+    private function buildOperations(array $operations): string
+    {
+        $types = $this->valuesToType($operations, fn (Operation $op) => $op->name);
+
+        return $types ? "includeOperations?: ({$types}|\"*\")[]," : '';
+    }
+
+    private function buildTypeProperty(string $name, array $items, Closure $getName): string
+    {
+        $types = $this->valuesToType($items, $getName);
+
+        return $types ? "{$name}?: ({$types})[]," : '';
+    }
+
+    private function buildNestedTypeProperty(string $name, string $subType, array $items, Closure $getName): string
+    {
+        $types = $this->valuesToType($items, $getName);
+
+        return $types ? "{$name}?: {$subType}<{$types}>," : '';
     }
 
     private function valuesToType(array $items, Closure $getName): string
     {
-        $items = array_map(
-            static function (mixed $item) use ($getName) {
-                return '"'.$getName($item).'"';
-            },
-            $items
-        );
+        $quoted = array_map(fn ($item) => '"'.$getName($item).'"', $items);
 
-        return implode('|', $items);
+        return implode('|', $quoted);
     }
 }

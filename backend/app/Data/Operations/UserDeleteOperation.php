@@ -16,6 +16,6 @@ class UserDeleteOperation extends Operation
             return false;
         }
 
-        return Gate::allows('delete', [$data->fromModel]);
+        return Gate::allows('delete', [$data->getFromModel()]);
     }
 }

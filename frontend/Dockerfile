@@ -5,4 +5,4 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 FROM base AS local
 
-RUN apk add just
+RUN apk add git just

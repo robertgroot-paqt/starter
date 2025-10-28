@@ -14,7 +14,7 @@ export const SessionApi = {
             method: "GET",
         }),
     destroy: () =>
-        useApi<any>({
+        useApi<never>({
             url: "api/v1/session/logout",
             method: "POST",
         }),
@@ -31,11 +31,11 @@ export const UserApi = {
             | {
                   include?: "roles"[];
                   sorts?: ("name" | "-name")[];
-                  filters?: Filter<"id" | "name" | "email">[];
+                  filters?: Filter<"id" | "name" | "email">;
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<any>({
+        useApi<Array<UserData>>({
             url: "api/v1/users",
             method: "GET",
             query: query,
@@ -47,7 +47,7 @@ export const UserApi = {
             | {
                   include?: "roles"[];
                   sorts?: ("name" | "-name")[];
-                  filters?: Filter<"id" | "name" | "email">[];
+                  filters?: Filter<"id" | "name" | "email">;
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
@@ -64,7 +64,7 @@ export const UserApi = {
             | {
                   include?: "roles"[];
                   sorts?: ("name" | "-name")[];
-                  filters?: Filter<"id" | "name" | "email">[];
+                  filters?: Filter<"id" | "name" | "email">;
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
@@ -82,7 +82,7 @@ export const UserApi = {
             | {
                   include?: "roles"[];
                   sorts?: ("name" | "-name")[];
-                  filters?: Filter<"id" | "name" | "email">[];
+                  filters?: Filter<"id" | "name" | "email">;
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
@@ -100,11 +100,11 @@ export const UserApi = {
             | {
                   include?: "roles"[];
                   sorts?: ("name" | "-name")[];
-                  filters?: Filter<"id" | "name" | "email">[];
+                  filters?: Filter<"id" | "name" | "email">;
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<any>({
+        useApi<never>({
             url: "api/v1/users/{user}",
             method: "DELETE",
             urlParameters: parameters,

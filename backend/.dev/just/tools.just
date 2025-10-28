@@ -3,3 +3,6 @@ pint-fix:
 
 pint-lint:
     just in-be ./vendor/bin/pint --test
+
+generate:
+    just in-be php artisan typescript:transform

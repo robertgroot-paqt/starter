@@ -12,4 +12,4 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM base AS dev
 
-RUN apk add just
+RUN apk add git just
