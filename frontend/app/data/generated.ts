@@ -3,13 +3,13 @@ export type RoleData = {
 };
 export const SessionApi = {
     store: (input: SessionCreateData) =>
-        useApi<UserData>({
+        useApi<ApiWrap<UserData>>({
             url: "api/v1/session",
             method: "POST",
             data: input,
         }),
     show: () =>
-        useApi<UserData>({
+        useApi<ApiWrap<UserData>>({
             url: "api/v1/session",
             method: "GET",
         }),
@@ -35,7 +35,7 @@ export const UserApi = {
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<Array<UserData>>({
+        useApi<PaginatedCollection<ApiWrap<UserData>>>({
             url: "api/v1/users",
             method: "GET",
             query: query,
@@ -51,7 +51,7 @@ export const UserApi = {
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<UserData>({
+        useApi<ApiWrap<UserData>>({
             url: "api/v1/users",
             method: "POST",
             data: input,
@@ -68,7 +68,7 @@ export const UserApi = {
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<UserData>({
+        useApi<ApiWrap<UserData>>({
             url: "api/v1/users/{user}",
             method: "GET",
             urlParameters: parameters,
@@ -86,7 +86,7 @@ export const UserApi = {
                   includeOperations?: ("create" | "update" | "delete" | "*")[];
               } = undefined,
     ) =>
-        useApi<UserData>({
+        useApi<ApiWrap<UserData>>({
             url: "api/v1/users/{user}",
             method: "PUT",
             data: input,

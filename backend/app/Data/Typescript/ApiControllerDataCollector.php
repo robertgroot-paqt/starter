@@ -16,6 +16,8 @@ class ApiControllerDataCollector extends DefaultCollector
             return null;
         }
 
+        // See parent. This skips the transformable check
+
         $reflector = ClassTypeReflector::create($class);
 
         $transformedType = $reflector->getType()

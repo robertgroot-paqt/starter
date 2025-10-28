@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import * as z from "zod";
 import type { AuthFormField, FormSubmitEvent } from "@nuxt/ui";
+import type { SessionCreateData } from "~/data/generated";
 
 definePageMeta({
     sanctum: {
@@ -54,7 +55,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
         email: payload.data.email,
         password: payload.data.password,
         remember: true,
-    };
+    } satisfies SessionCreateData;
 
     await login(credentials);
 }

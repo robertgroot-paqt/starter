@@ -3,6 +3,7 @@
 namespace App\Data\Typescript;
 
 use App\Data\Base\Data;
+use App\Data\Base\PaginatedDataCollection;
 use App\Data\Operations\Operation;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
@@ -54,7 +55,7 @@ class ApiControllerCollector extends Collector
 
             $output = $this->reflectionToTypeScript($classMethod, $missingSymbols);
 
-            $result .= $this->getTypescript($route, $input, $output);
+            $result .= $this->getTypescript($route, $classMethod, $input, $output);
         }
 
         foreach ($missingSymbols->all() as $missingSymbol) {
@@ -112,12 +113,14 @@ class ApiControllerCollector extends Collector
         return str_replace('Controller', 'Api', $class->getShortName());
     }
 
-    private function getTypescript(Route $route, ?string $input, ?string $output): string
+    private function getTypescript(Route $route, ReflectionMethod $controllerMethod, ?string $input, ?string $output): string
     {
         $output ??= 'never';
 
         if ($output === 'void') {
             $output = 'never';
+        } else {
+            $output = $this->wrapOutput($controllerMethod, $output);
         }
 
         [$parametersDecl, $parametersUsage] = $this->buildParameters($route);
@@ -131,6 +134,28 @@ class ApiControllerCollector extends Collector
                     method: "{$route->methods[0]}",{$inputUsage}{$parametersUsage}{$queryUsage}
                 }),
         TS;
+    }
+
+    private function wrapOutput(ReflectionMethod $controllerMethod, string $type): string
+    {
+        $returnType = $controllerMethod->getReturnType();
+
+        $collectionWrap = 'Array';
+
+        if ($returnType instanceof ReflectionNamedType) {
+            $collectionWrap = match ($returnType->getName()) {
+                PaginatedDataCollection::class => 'PaginatedCollection',
+                default => $collectionWrap,
+            };
+        }
+
+        if (preg_match('/^Array<(.+)>$/', $type, $matches) || preg_match('/^(.+)\[\]$/', $type, $matches)) {
+            $innerType = $matches[1];
+
+            return "{$collectionWrap}<ApiWrap<{$innerType}>>";
+        }
+
+        return "ApiWrap<{$type}>";
     }
 
     private function buildParameters(Route $route): array
