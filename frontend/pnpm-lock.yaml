@@ -25,6 +25,9 @@ importers:
             vue-router:
                 specifier: ^4.5.1
                 version: 4.5.1(vue@3.5.22(typescript@5.9.3))
+            zod:
+                specifier: ^4.1.12
+                version: 4.1.12
         devDependencies:
             "@nuxt/eslint":
                 specifier: 1.9.0

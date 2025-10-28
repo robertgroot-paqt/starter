@@ -2,8 +2,8 @@
     <div>
         <span> hi {{ user }}</span>
 
-        <button v-if="user" @click="logout">logout</button>
-        <NuxtLink v-else to="login">login</NuxtLink>
+        <UButton v-if="user" @click="logout">logout</UButton>
+        <UButton v-else to="login">login</UButton>
     </div>
 </template>
 
