@@ -43,3 +43,6 @@ Run `php artisan typescript:transform` in the backend to generate the file that 
 ## TODOs
 
 - Folder structure: feature folders?
+- Database backed translations?
+- Laravel Saloon?
+- Laravel passport?

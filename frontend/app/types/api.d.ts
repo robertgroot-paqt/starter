@@ -36,4 +36,3 @@ type ApiWrap<T> = T extends object
                     : T[K];
             }>
     : T; // Primitives stay as-is
-

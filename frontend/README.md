@@ -1,4 +1,4 @@
-# Laravel starter project
+# Nuxt starter project
 
 ## Laravel sanctum
 
@@ -10,4 +10,6 @@ Uses Nuxt UI for components
 
 ## TODOs
 
-?
+- Table pagination
+- i18n from the backend db
+- nuxt content?

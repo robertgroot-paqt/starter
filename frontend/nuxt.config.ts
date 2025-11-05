@@ -27,9 +27,9 @@ export default defineNuxtConfig({
         },
         redirect: {
             keepRequestedRoute: true,
-            onLogin: '/',
-            onLogout: '/login'
-        }
+            onLogin: "/",
+            onLogout: "/login",
+        },
 
         // logLevel: 5
     },

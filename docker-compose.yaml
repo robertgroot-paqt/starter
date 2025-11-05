@@ -16,7 +16,9 @@ services:
 
   node:
     container_name: node
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: dev
     command: just run
     working_dir: /app/frontend
     extra_hosts:

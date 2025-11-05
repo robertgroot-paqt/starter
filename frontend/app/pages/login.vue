@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-center gap-4 p-4 h-dvh ">
+    <div class="flex flex-col items-center justify-center gap-4 p-4 h-dvh">
         <UPageCard class="w-full max-w-md">
             <UAuthForm
                 :schema="schema"
@@ -33,7 +33,7 @@ const fields: AuthFormField[] = [
         label: "Email",
         placeholder: "Enter your email",
         required: true,
-        defaultValue: "admin@paqt.dev"
+        defaultValue: "admin@paqt.dev",
     },
     {
         name: "password",
@@ -41,7 +41,7 @@ const fields: AuthFormField[] = [
         type: "password",
         placeholder: "Enter your password",
         required: true,
-        defaultValue: "admin"
+        defaultValue: "admin",
     },
 ];
 const sumbitting = ref(false);
