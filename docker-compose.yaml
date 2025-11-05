@@ -4,7 +4,7 @@ services:
     build:
       context: ./backend
       target: dev
-    command: php artisan serve --host=0.0.0.0
+    command: just run
     working_dir: /var/www/html/backend
     volumes:
       - ./:/var/www/html
@@ -17,7 +17,7 @@ services:
   node:
     container_name: node
     build: ./frontend
-    command: pnpm run dev
+    command: just run
     working_dir: /app/frontend
     extra_hosts:
     - api.starter.paqt.dev:host-gateway

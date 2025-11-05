@@ -25,6 +25,19 @@ export default defineNuxtConfig({
         globalMiddleware: {
             enabled: true,
         },
+        redirect: {
+            keepRequestedRoute: true,
+            onLogin: '/',
+            onLogout: '/login'
+        }
+
         // logLevel: 5
+    },
+
+    icon: {
+        serverBundle: {
+            // Serve these icons locally
+            // collections: ["lucide"],
+        },
     },
 });

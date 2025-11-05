@@ -8,3 +8,7 @@ default:
 fix: prettier-fix eslint-fix
 
 lint: prettier eslint
+
+run:
+    pnpm i
+    pnpm run dev

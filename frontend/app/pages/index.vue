@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <span> hi {{ user }}</span>
+    <UDashboardPanel id="index">
+        <template #header>
+            <UDashboardNavbar title="Home">
+                <template #leading>
+                    <UDashboardSidebarCollapse />
+                </template>
+            </UDashboardNavbar>
+        </template>
 
-        <UButton v-if="user" @click="logout">logout</UButton>
-        <UButton v-else to="login">login</UButton>
-    </div>
+        <template #body> Hi {{ user?.data.name }}! </template>
+    </UDashboardPanel>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-    sanctum: {
-        excluded: true,
-    },
-});
+import type { UserData } from "~/data/generated";
 
-const user = useSanctumUser();
-
-const { logout } = useSanctumAuth();
+const user = useSanctumUser<ApiWrap<UserData>>();
 </script>

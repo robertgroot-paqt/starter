@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-center gap-4 p-4">
+    <div class="flex flex-col items-center justify-center gap-4 p-4 h-dvh ">
         <UPageCard class="w-full max-w-md">
             <UAuthForm
                 :schema="schema"
@@ -7,6 +7,7 @@
                 description="Enter your credentials to access your account."
                 icon="i-lucide-user"
                 :fields="fields"
+                :loading="sumbitting"
                 @submit="onSubmit"
             />
         </UPageCard>
@@ -22,6 +23,7 @@ definePageMeta({
     sanctum: {
         guestOnly: true,
     },
+    layout: "public",
 });
 
 const fields: AuthFormField[] = [
@@ -31,6 +33,7 @@ const fields: AuthFormField[] = [
         label: "Email",
         placeholder: "Enter your email",
         required: true,
+        defaultValue: "admin@paqt.dev"
     },
     {
         name: "password",
@@ -38,8 +41,10 @@ const fields: AuthFormField[] = [
         type: "password",
         placeholder: "Enter your password",
         required: true,
+        defaultValue: "admin"
     },
 ];
+const sumbitting = ref(false);
 
 const schema = z.object({
     email: z.email("Invalid email"),
@@ -57,6 +62,11 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
         remember: true,
     } satisfies SessionCreateData;
 
-    await login(credentials);
+    sumbitting.value = true;
+    try {
+        await login(credentials);
+    } finally {
+        sumbitting.value = false;
+    }
 }
 </script>
